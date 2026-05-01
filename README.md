@@ -1,6 +1,6 @@
-# Shakoor Shaik Portfolio
+# My Personal Portfolio
 
-Professional portfolio website showcasing projects, technical skills, and experience in software development and machine learning.
+Professional portfolio website showcasing my projects, technical skills, and experience in software development and machine learning.
 
 **Live website:** [https://shakoorshaik.github.io/](https://shakoorshaik.github.io/)
 
