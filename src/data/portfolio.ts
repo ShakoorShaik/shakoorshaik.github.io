@@ -6,6 +6,7 @@ export const personal = {
   location: '🇨🇦 Toronto, ON',
   email: 'shakoorshaik7@gmail.com',
   github: 'https://github.com/shakoorshaik',
+  githubwebsite: 'https://github.com/ShakoorShaik/shakoorshaik.github.io',
   linkedin: 'https://linkedin.com/in/shakoorshaik',
   university: 'University of Toronto Scarborough',
   degree: 'B.Sc. Computer Science — Software Engineering',
