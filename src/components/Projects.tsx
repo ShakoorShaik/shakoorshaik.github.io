@@ -38,6 +38,28 @@ const ChevronRight = () => (
   </svg>
 )
 
+const CrownIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 3.75l2.55 5.17 5.7.83-4.12 4.02.97 5.68L12 16.77l-5.1 2.68.97-5.68-4.12-4.02 5.7-.83L12 3.75Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+  </svg>
+)
+
+function AwardBadge({ award }: { award: string }) {
+  return (
+    <span
+      className="relative inline-flex shrink-0 text-[#bca35a] transition-all duration-200 hover:text-[#e5c66b] hover:drop-shadow-[0_0_8px_rgba(229,198,107,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7a6228] group/award"
+      tabIndex={0}
+      aria-label={`Award: ${award}`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <CrownIcon />
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-3 w-max max-w-[14rem] -translate-x-1/2 rounded-lg border border-[#343024] bg-[#111] px-3 py-2 text-center text-[12px] font-semibold leading-snug text-[#e4d08f] opacity-0 shadow-[0_12px_30px_rgba(0,0,0,0.45)] transition-all duration-150 group-hover/award:opacity-100 group-focus-visible/award:opacity-100">
+        {award}
+      </span>
+    </span>
+  )
+}
+
 function iconForType(type: string) {
   switch (type) {
     case 'github': return <GithubIcon />
@@ -46,6 +68,8 @@ function iconForType(type: string) {
     default: return <ExternalIcon />
   }
 }
+
+const hasReadme = (project: Project) => project.readme.trim().length > 0
 
 export default function Projects() {
   const [showAll, setShowAll] = useState(false)
@@ -87,80 +111,89 @@ export default function Projects() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 md:gap-8 xl:gap-10">
-          {displayed.map((project) => (
-            <article
-              key={project.title}
-              onClick={() => setSelected(project)}
-              className="group flex flex-col rounded-2xl border-2 border-[var(--color-border)] bg-[#111111] overflow-hidden hover:border-[#404040] hover:-translate-y-0.5 hover:shadow-[0_20px_56px_rgba(0,0,0,0.58)] transition-all duration-200 cursor-pointer"
-            >
-              {project.image && (
-                <div className="w-full aspect-[16/9] overflow-hidden bg-[#0d0d0d]">
-                  <img
-                    src={project.image}
-                    alt={`Screenshot of ${project.title}`}
-                    className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-              )}
+          {displayed.map((project) => {
+            const canOpenReadme = hasReadme(project)
 
-              <div className="flex flex-col flex-1 p-6 md:p-7 lg:p-8 gap-4 md:gap-5">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-[1.125rem] md:text-xl lg:text-[1.35rem] font-semibold text-foreground leading-snug">
-                    {project.title}
-                  </h3>
-                  <span className="text-[15px] md:text-base text-[var(--color-muted)] shrink-0 mt-0.5 whitespace-nowrap tabular-nums font-medium">
-                    {project.period}
-                  </span>
-                </div>
+            return (
+              <article
+                key={project.title}
+                onClick={() => {
+                  if (canOpenReadme) setSelected(project)
+                }}
+                className={`group flex flex-col rounded-2xl border-2 border-[var(--color-border)] bg-[#111111] overflow-hidden hover:border-[#404040] hover:-translate-y-0.5 hover:shadow-[0_20px_56px_rgba(0,0,0,0.58)] transition-all duration-200 ${canOpenReadme ? 'cursor-pointer' : 'cursor-default'}`}
+              >
+                {project.image && (
+                  <div className="w-full aspect-[16/9] overflow-hidden bg-[#0d0d0d]">
+                    <img
+                      src={project.image}
+                      alt={`Screenshot of ${project.title}`}
+                      className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
 
-                <p className="text-[17px] md:text-[18px] lg:text-[19px] text-[var(--color-muted)] leading-[1.65]">
-                  {project.description}
-                </p>
-
-                <div className="mt-auto pt-1 flex flex-wrap items-center gap-2 md:gap-2.5">
-                  <span className="text-[15px] md:text-[16px] text-[#707070] mr-0.5 font-semibold">Built with</span>
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="text-[14px] md:text-[15px] px-3.5 py-2 md:px-4 md:py-2 rounded-lg border-2 border-[#333] text-[#b0b0b0] bg-[#0d0d0d] leading-snug font-semibold"
-                    >
-                      {t}
+                <div className="flex flex-col flex-1 p-6 md:p-7 lg:p-8 gap-4 md:gap-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="flex min-w-0 flex-wrap items-center gap-2 text-[1.125rem] md:text-xl lg:text-[1.35rem] font-semibold text-foreground leading-snug">
+                      <span>{project.title}</span>
+                      {project.award && <AwardBadge award={project.award} />}
+                    </h3>
+                    <span className="text-[15px] md:text-base text-[var(--color-muted)] shrink-0 mt-0.5 whitespace-nowrap tabular-nums font-medium">
+                      {project.period}
                     </span>
-                  ))}
-                </div>
+                  </div>
 
-                <div className="flex items-center justify-between gap-3 pt-4 border-t-2 border-[#1f1f1f]">
-                  {project.links.length > 0 && (
-                    <div className="flex flex-wrap gap-2.5">
-                      {project.links.map((link) => (
-                        <a
-                          key={link.label}
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-[15px] md:text-[16px] font-semibold px-4 py-2 rounded-lg border-2 border-[#3a3a3a] text-[#d0d0d0] hover:text-white hover:border-[#666] bg-[#121212] transition-all duration-150"
-                        >
-                          {iconForType(link.icon)}
-                          {link.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                  <button
-                    type="button"
-                    className="ml-auto flex items-center gap-2 text-[15px] md:text-[16px] font-semibold px-4 py-2 rounded-lg border-2 border-[#3a3a3a] text-[#d0d0d0] hover:text-white hover:border-[#666] bg-[#121212] transition-all duration-150 whitespace-nowrap shrink-0"
-                  >
-                    View readme
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </button>
+                  <p className="text-[17px] md:text-[18px] lg:text-[19px] text-[var(--color-muted)] leading-[1.65]">
+                    {project.description}
+                  </p>
+
+                  <div className="mt-auto pt-1 flex flex-wrap items-center gap-2 md:gap-2.5">
+                    <span className="text-[15px] md:text-[16px] text-[#707070] mr-0.5 font-semibold">Built with</span>
+                    {project.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="text-[14px] md:text-[15px] px-3.5 py-2 md:px-4 md:py-2 rounded-lg border-2 border-[#333] text-[#b0b0b0] bg-[#0d0d0d] leading-snug font-semibold"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-3 pt-4 border-t-2 border-[#1f1f1f]">
+                    {project.links.length > 0 && (
+                      <div className="flex flex-wrap gap-2.5">
+                        {project.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-[15px] md:text-[16px] font-semibold px-4 py-2 rounded-lg border-2 border-[#3a3a3a] text-[#d0d0d0] hover:text-white hover:border-[#666] bg-[#121212] transition-all duration-150"
+                          >
+                            {iconForType(link.icon)}
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                    {canOpenReadme && (
+                      <button
+                        type="button"
+                        className="ml-auto flex items-center gap-2 text-[15px] md:text-[16px] font-semibold px-4 py-2 rounded-lg border-2 border-[#3a3a3a] text-[#d0d0d0] hover:text-white hover:border-[#666] bg-[#121212] transition-all duration-150 whitespace-nowrap shrink-0"
+                      >
+                        View readme
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            )
+          })}
         </div>
       </section>
 

@@ -4,13 +4,17 @@
  */
 
 export const FEATURED_PROJECT_TITLES = [
+  'Pada Guidance',
   'SmartAir Health',
-  'Clippy',
   'Wine Quality Regression',
 ] as const
 
-/** Shown first in "All Projects" immediately after the featured trio. */
-export const PRIORITIZED_AFTER_FEATURED_TITLES = ['AI Course Planner UofT'] as const
+/** Shown first in "All Projects" immediately after the featured projects. */
+export const PRIORITIZED_AFTER_FEATURED_TITLES = [
+  'Okra',
+  'Clippy',
+  'AI Course Planner UofT',
+] as const
 
 export const PRIORITIZED_ALL_TITLE_ORDER = [
   ...FEATURED_PROJECT_TITLES,

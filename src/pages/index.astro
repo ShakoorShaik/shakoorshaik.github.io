@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro'
 import HeroTerminal from '../components/HeroTerminal'
 import Projects from '../components/Projects'
-import { personal, techStack, tools } from '../data/portfolio'
+import ExperienceTimeline from '../components/ExperienceTimeline'
+import { experiences, personal, techStack, tools } from '../data/portfolio'
 ---
 
 <Layout>
@@ -20,9 +21,10 @@ import { personal, techStack, tools } from '../data/portfolio'
         <div aria-hidden="true"></div>
         <!-- Center: nav links -->
         <nav class="flex items-center gap-0.5">
-          <a href="#projects" class="text-[13px] px-3 py-1.5 rounded-md text-[var(--color-foreground)] bg-[#151515] transition-all duration-150">Projects</a>
-          <a href="#stack" class="text-[13px] px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tech Stack</a>
-          <a href="#tools" class="text-[13px] px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tools</a>
+          <a href="#projects" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-foreground)] bg-[#151515] transition-all duration-150">Projects</a>
+          <a href="#experience" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Experience</a>
+          <a href="#stack" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tech Stack</a>
+          <a href="#tools" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tools</a>
         </nav>
         <!-- Right: icon buttons -->
         <div class="flex items-center gap-1 justify-end">
@@ -129,6 +131,11 @@ import { personal, techStack, tools } from '../data/portfolio'
         <div class="animate-fade-up delay-3">
           <Projects client:load />
         </div>
+
+        <!-- ═══════════════════════════════════════════
+             EXPERIENCE
+        ════════════════════════════════════════════ -->
+        <ExperienceTimeline experiences={experiences} client:load />
 
         <!-- ═══════════════════════════════════════════
              TECH STACK

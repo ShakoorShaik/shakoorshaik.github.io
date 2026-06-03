@@ -28,10 +28,87 @@ export type Project = {
   image: string | null
   demoVideo: string | null
   featured: boolean
+  award?: string
   readme: string
 }
 
+export type Experience = {
+  role: string
+  company: string
+  period: string
+  logo: string
+  logoAlt: string
+  logoBackground?: 'dark' | 'light'
+  responsibilities: string[]
+}
+
+export const experiences: Experience[] = [
+  {
+    role: 'Software Engineer Intern',
+    company: 'Pada Guidance',
+    period: 'May 2026 - Present',
+    logo: '/assets/experience/pada-guidance.svg',
+    logoAlt: 'Pada Guidance logo',
+    responsibilities: [
+      'Shipped core React Native and Expo product features, including driving preferences, cruise-startup latency fixes, and high-impact sprint tickets ahead of launch.',
+      'Engineered AWS and Supabase/Postgres data pipelines for a 100K+ lane-level road-hazard dataset powering real-time routing, hazard reporting, and session analytics.',
+      'Built CI/CD pipelines, automated test coverage, and weekly feedback loops that shortened release cycles and reduced regression risk across core flows.',
+    ],
+  },
+  {
+    role: 'SWE Instructor',
+    company: 'Exceed Robotics',
+    period: 'Sep. 2025 - June 2026',
+    logo: '/assets/experience/exceed-robotics.svg',
+    logoAlt: 'Exceed Robotics logo',
+    logoBackground: 'light',
+    responsibilities: [
+      'Taught software engineering and robotics concepts through hands-on coding projects for students building technical foundations.',
+      'Guided learners through programming, web development, robotics, and AI exercises aligned with Exceed Robotics course material.',
+      'Supported debugging, project iteration, and problem-solving habits so students could turn concepts into working builds.',
+    ],
+  },
+  {
+    role: 'Full-Stack Engineer Intern',
+    company: 'CREATE UofT',
+    period: 'Sep. 2024 - Dec. 2025',
+    logo: '/assets/experience/create-uof-t.jpg',
+    logoAlt: 'CREATE UofT logo',
+    responsibilities: [
+      'Shipped a production full-stack course-planning platform for 15,000+ UofT students with a React frontend, Flask/Python REST APIs, and a normalized MySQL backend.',
+      'Supported conflict-free scheduling across full course loads by designing a normalized relational schema with smart conflict detection over indexed joins.',
+      'Accelerated feature delivery by improving deployment workflows, integration testing, and agile sprint practices.',
+    ],
+  },
+  {
+    role: 'Data Processing Engineer Intern',
+    company: 'University of Toronto Aerospace Team',
+    period: 'Sep. 2024 - Sep. 2025',
+    logo: '/assets/experience/utat.jpg',
+    logoAlt: 'University of Toronto Aerospace Team logo',
+    responsibilities: [
+      'Designed and trained 2D/3D CNN models in Python for hyperspectral image classification on the FINCH satellite mission.',
+      'Audited and corrected mission database errors across relational and NoSQL datasets to improve training-data quality.',
+      'Contributed 1,000+ lines of Python to the open-source FINCH smile-keystone distortion-correction pipeline through structured Git workflows and code reviews.',
+    ],
+  },
+]
+
 export const projects: Project[] = [
+  {
+    title: 'Pada Guidance',
+    period: 'Spring 2026 - Present',
+    description:
+      'Lane-level driving assistant for iOS and Android that helps drivers avoid potholes, road hazards, and rough lanes with real-time routing context and smart in-drive alerts.',
+    tech: ['React Native', 'Expo', 'TypeScript', 'AWS', 'Supabase', 'PostgreSQL'],
+    links: [
+      { label: 'Website', url: 'https://padaguidance.com/', icon: 'external' },
+    ],
+    image: '/assets/projects/pada-guidance.png',
+    demoVideo: null,
+    featured: true,
+    readme: '',
+  },
   {
     title: 'SmartAir Health',
     period: 'Fall 2025',
@@ -111,7 +188,7 @@ The app uses a hybrid architecture combining **MVP (Model-View-Presenter)** for 
     ],
     image: '/assets/projects/okra.png',
     demoVideo: 'https://github.com/user-attachments/assets/f512d512-22e0-4889-a413-f2fbb74a738e',
-    featured: true,
+    featured: false,
     readme: `## Overview
 
 Ontario faces a critical care gap: over **50,000 seniors** require long-term home care, yet fewer than **7,000 registered caregivers** are actively available. Okra replaces the current phone-and-spreadsheet dispatch process with an AI-native routing pipeline.
@@ -184,7 +261,8 @@ Three distinct agents power the platform using ibm/granite-3-8b-instruct:
     ],
     image: '/assets/projects/clippy.png',
     demoVideo: 'https://github.com/user-attachments/assets/1f05ed35-a38f-4962-bda8-71261988edc0',
-    featured: true,
+    featured: false,
+    award: '2nd Place at MUES Hackathon TMU 2024',
     readme: `## Overview
 
 Clippy is a modern drawing application inspired by MS Paint with AI-powered drawing challenges — built at the **MUES Hackathon TMU 2024**, where it placed **2nd overall**.
@@ -246,7 +324,8 @@ Clippy is a modern drawing application inspired by MS Paint with AI-powered draw
     ],
     image: 'https://github.com/user-attachments/assets/c7512cbe-378d-4ffe-b432-754a3a97879a',
     demoVideo: null,
-    featured: true,
+    featured: false,
+    award: '2nd Place at MUES Winter Hackathon x Notion TMU 2025',
     readme: `## Overview
 
 Lvcky is a centralized productivity ecosystem built to engineer a user's life through a structured, relational framework — connecting long-term goals directly to daily actions in one command center.
@@ -294,7 +373,8 @@ Lvcky is a centralized productivity ecosystem built to engineer a user's life th
     ],
     image: '/assets/projects/nautica-bot.png',
     demoVideo: null,
-    featured: true,
+    featured: false,
+    award: 'Most Creative Implementation and 3rd Place at Code Clash UofT 2026',
     readme: `## Overview
 
 Nautica is an autonomous AI bot built for the **Code Clash: Battleship Challenge** at the University of Toronto — engineered under strict 10-hour hackathon constraints with no external dependencies.
