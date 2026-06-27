@@ -46,7 +46,7 @@ export const experiences: Experience[] = [
   {
     role: 'Software Engineer Intern',
     company: 'Pada Guidance',
-    period: 'May 2026 - Present',
+    period: 'Dec. 2025 - Present',
     logo: '/assets/experience/pada-guidance.svg',
     logoAlt: 'Pada Guidance logo',
     responsibilities: [
