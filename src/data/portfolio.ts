@@ -39,10 +39,24 @@ export type Experience = {
   logo: string
   logoAlt: string
   logoBackground?: 'dark' | 'light'
+  logoFit?: 'square' | 'wide'
   responsibilities: string[]
 }
 
 export const experiences: Experience[] = [
+  {
+    role: 'Agentic AI Product Developer Intern',
+    company: 'ZenduIT',
+    period: 'June 2026 - Present',
+    logo: '/assets/experience/zenduit.png',
+    logoAlt: 'ZenduIT logo',
+    logoFit: 'wide',
+    responsibilities: [
+      'Exploring, building proof-of-concepts for, and testing new marketplace applications and customer-facing products on the Geotab and ZenduONE platform.',
+      'Discovering customer challenges, developing simple tools, and trialing concepts with customers to gauge commercial viability.',
+      'Leveraging the Geotab and ZenduONE SDKs to create add-ins, operational tooling, and AI-powered solutions.',
+    ],
+  },
   {
     role: 'Software Engineer Intern',
     company: 'Pada Guidance',

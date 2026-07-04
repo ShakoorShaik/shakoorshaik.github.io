@@ -6,6 +6,33 @@ type Props = {
   experiences: Experience[]
 }
 
+function logoFrameClass(experience: Experience, size: 'timeline' | 'modal') {
+  const background =
+    experience.logoBackground === 'light'
+      ? 'border-[#e7e7e7] bg-white'
+      : 'border-[#292929] bg-[#151515]'
+
+  if (experience.logoFit === 'wide') {
+    return size === 'timeline'
+      ? 'flex h-full w-full items-center justify-center rounded-full px-1 py-0.5 md:px-1.5 md:py-1'
+      : `${background} flex h-14 w-[6.25rem] items-center justify-center overflow-hidden rounded-full border px-2 py-1 md:h-16 md:w-[7.25rem]`
+  }
+
+  return size === 'timeline'
+    ? `${background} flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border md:h-14 md:w-14`
+    : `${background} flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border md:h-16 md:w-16`
+}
+
+function logoImageClass(experience: Experience, size: 'timeline' | 'modal') {
+  if (experience.logoFit === 'wide') {
+    return size === 'timeline'
+      ? 'h-auto w-[94%] object-contain'
+      : 'h-auto w-full max-w-full object-contain'
+  }
+
+  return 'h-full w-full object-contain p-1'
+}
+
 function ExperienceModal({ experience, onClose }: { experience: Experience | null; onClose: () => void }) {
   useEffect(() => {
     if (!experience) return
@@ -36,12 +63,18 @@ function ExperienceModal({ experience, onClose }: { experience: Experience | nul
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start gap-5 border-b border-[#242424] px-6 py-6 md:px-7">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border-2 border-[#303030] bg-[#0d0d0d] md:h-20 md:w-20">
-            <div className={`${experience.logoBackground === 'light' ? 'border-[#e7e7e7] bg-white' : 'border-[#292929] bg-[#151515]'} flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border md:h-16 md:w-16`}>
+          <div
+            className={`flex shrink-0 items-center justify-center border-2 border-[#303030] bg-[#0d0d0d] ${
+              experience.logoFit === 'wide'
+                ? 'h-16 w-16 rounded-full md:h-20 md:w-20'
+                : 'h-16 w-16 rounded-2xl md:h-20 md:w-20'
+            }`}
+          >
+            <div className={logoFrameClass(experience, 'modal')}>
               <img
                 src={experience.logo}
                 alt={experience.logoAlt}
-                className="h-full w-full object-contain p-1.5"
+                className={logoImageClass(experience, 'modal')}
                 loading="lazy"
               />
             </div>
@@ -123,14 +156,14 @@ export default function ExperienceTimeline({ experiences }: Props) {
                   </div>
 
                   <div className="relative z-10 col-start-2 row-start-1 mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#303030] bg-[#0d0d0d] shadow-[0_0_0_10px_#0a0a0a] transition-all duration-200 group-hover:border-[#4a4a4a] group-hover:shadow-[0_0_0_10px_#0a0a0a,0_0_26px_rgba(255,255,255,0.11)] md:h-20 md:w-20 md:shadow-[0_0_0_12px_#0a0a0a] md:group-hover:shadow-[0_0_0_12px_#0a0a0a,0_0_26px_rgba(255,255,255,0.11)]">
-                    <div className={`${experience.logoBackground === 'light' ? 'border-[#e7e7e7] bg-white' : 'border-[#292929] bg-[#151515]'} flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border md:h-14 md:w-14`}>
+                    <div className={logoFrameClass(experience, 'timeline')}>
                       <img
                         src={experience.logo}
                         alt={experience.logoAlt}
                         width="48"
                         height="48"
                         loading="lazy"
-                        className="h-full w-full object-contain p-1"
+                        className={logoImageClass(experience, 'timeline')}
                       />
                     </div>
                   </div>

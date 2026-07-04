@@ -1,13 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import HeroTerminal from '../components/HeroTerminal'
+import ParallaxScroll from '../components/ParallaxScroll'
 import Projects from '../components/Projects'
 import ExperienceTimeline from '../components/ExperienceTimeline'
 import { experiences, personal, techStack, tools } from '../data/portfolio'
 ---
 
 <Layout>
+  <ParallaxScroll client:load />
   <div class="min-h-screen text-[var(--color-foreground)]">
+    <!-- Ambient parallax depth -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+      <div
+        data-parallax="0.18"
+        data-parallax-mode="fixed"
+        class="parallax-bg-glow absolute -top-[18%] -left-[12%] h-[min(72vw,720px)] w-[min(72vw,720px)] rounded-full bg-[radial-gradient(circle,rgba(74,222,128,0.07)_0%,transparent_68%)]"
+      ></div>
+      <div
+        data-parallax="0.12"
+        data-parallax-mode="fixed"
+        class="parallax-bg-glow absolute top-[38%] -right-[14%] h-[min(58vw,560px)] w-[min(58vw,560px)] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,transparent_70%)]"
+      ></div>
+      <div
+        data-parallax="0.08"
+        data-parallax-mode="fixed"
+        class="parallax-bg-glow absolute -bottom-[22%] left-[28%] h-[min(50vw,480px)] w-[min(50vw,480px)] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.035)_0%,transparent_72%)]"
+      ></div>
+    </div>
+
     <!-- Noise texture overlay -->
     <div
       class="fixed inset-0 pointer-events-none z-0 opacity-[0.025]"
@@ -21,7 +42,7 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
         <div aria-hidden="true"></div>
         <!-- Center: nav links -->
         <nav class="flex items-center gap-0.5">
-          <a href="#projects" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-foreground)] bg-[#151515] transition-all duration-150">Projects</a>
+          <a href="#projects" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Projects</a>
           <a href="#experience" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Experience</a>
           <a href="#stack" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tech Stack</a>
           <a href="#tools" class="text-[13px] px-2.5 sm:px-3 py-1.5 rounded-md text-[var(--color-muted)] hover:text-[var(--color-foreground)] hover:bg-[#111] transition-all duration-150">Tools</a>
@@ -48,23 +69,21 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
            HERO — bio left, terminal right
       ════════════════════════════════════════════ -->
       <section class="pt-12 md:pt-14 mb-24 md:mb-28 animate-fade-up delay-1">
-        <!-- Availability badge -->
-        <div class="mb-8 md:mb-10">
-          <span class="inline-flex items-center gap-2.5 text-[13px] md:text-[14px] text-[#888] border-2 border-[#242424] rounded-full px-4 py-2 bg-[#0f0f0f] font-medium">
-            <span class="relative flex h-1.5 w-1.5 shrink-0">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ade80] opacity-60"></span>
-              <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#4ade80]"></span>
-            </span>
-            Open to internships &middot; Summer/Fall 2026
-          </span>
+        <!-- Availability -->
+        <div class="mb-8 md:mb-10" data-parallax="0.06">
+          <div class="inline-flex items-stretch font-mono text-[11px] md:text-[12px] tracking-[0.08em] uppercase select-none">
+            <span class="border border-[#2a2a2e] bg-[#101014] px-2 py-2 text-[#555]">status</span>
+            <span class="border-y border-r border-[#2a2a2e] bg-[#0c0c0f] px-3 py-2 text-[#7a7a7a]">open to internships</span>
+            <span class="border-y border-r border-[#2a2a2e] bg-[#0f0f12] px-3 py-2 text-[#555]">summer 2027</span>
+          </div>
         </div>
 
         <div class="flex flex-col md:flex-row md:items-center gap-12 md:gap-14 xl:gap-[4.5rem]">
 
           <!-- Left: display headline + blurb -->
-          <div class="flex-1 min-w-0 md:py-1">
+          <div class="flex-1 min-w-0 md:py-1" data-parallax="0.11">
             <h1 class="text-[clamp(2.625rem,3.2vw+1.75rem,3.875rem)] sm:text-[3.375rem] lg:text-[3.625rem] xl:text-[4rem] font-bold leading-[1.06] tracking-[-0.02em] mb-6 md:mb-8">
-              <span class="text-[#505050]">Hey! I'm </span><span class="text-white">{personal.name}</span><span class="text-[#505050]">,<br/>a </span><span class="text-white">Software<br/>Developer</span><span class="text-[#505050]"><br/>and </span><span class="text-white">ML Engineer</span><span class="text-[#505050]">.</span>
+              <span class="text-[#505050]">Hey! I'm </span><span class="text-white">{personal.name}</span><span class="text-[#505050]">,<br/>a </span><span class="text-white">Software<br/>Developer</span><span class="text-[#505050]"><br/>and </span><span class="text-white">AI Engineer</span><span class="text-[#505050]">.</span>
             </h1>
 
             <p class="text-[17px] md:text-[18px] xl:text-[19px] text-[#707070] leading-[1.7] mb-8 md:mb-10 max-w-[36rem] xl:max-w-[40rem]">
@@ -117,7 +136,7 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
           </div>
 
           <!-- Right: terminal — wider + taller than before; vertically centered beside copy on md+ -->
-          <div class="w-full md:w-[clamp(340px,36vw,420px)] lg:w-[clamp(400px,32vw,480px)] xl:w-[520px] shrink-0 animate-fade-up delay-2 h-[420px] sm:h-[460px] md:h-[490px] lg:h-[540px] xl:h-[580px]">
+          <div class="w-full md:w-[clamp(340px,36vw,420px)] lg:w-[clamp(400px,32vw,480px)] xl:w-[520px] shrink-0 animate-fade-up delay-2 h-[420px] sm:h-[460px] md:h-[490px] lg:h-[540px] xl:h-[580px]" data-parallax="-0.09">
             <HeroTerminal client:only="react" />
           </div>
 
@@ -128,24 +147,28 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
         <!-- ═══════════════════════════════════════════
              PROJECTS (React island)
         ════════════════════════════════════════════ -->
-        <div class="animate-fade-up delay-3">
+        <div class="animate-fade-up delay-3" data-parallax="0.07">
           <Projects client:load />
         </div>
 
         <!-- ═══════════════════════════════════════════
              EXPERIENCE
         ════════════════════════════════════════════ -->
-        <ExperienceTimeline experiences={experiences} client:load />
+        <div data-parallax="0.05">
+          <ExperienceTimeline experiences={experiences} client:load />
+        </div>
 
         <!-- ═══════════════════════════════════════════
              TECH STACK
         ════════════════════════════════════════════ -->
         <section id="stack" class="animate-fade-up delay-5 py-24 md:py-28 border-t border-[var(--color-border)]">
-          <h2 class="text-2xl md:text-3xl xl:text-[2.125rem] font-semibold mb-4 tracking-tight text-[var(--color-foreground)]">Core Technologies</h2>
-          <p class="text-[17px] md:text-[19px] xl:text-[20px] text-[var(--color-muted)] mb-12 md:mb-14 max-w-none leading-relaxed">
-            Languages and frameworks I rely on to build production-ready applications.
-          </p>
-          <div class="flex flex-wrap gap-3.5 md:gap-4">
+          <div data-parallax="0.04">
+            <h2 class="text-2xl md:text-3xl xl:text-[2.125rem] font-semibold mb-4 tracking-tight text-[var(--color-foreground)]">Core Technologies</h2>
+            <p class="text-[17px] md:text-[19px] xl:text-[20px] text-[var(--color-muted)] mb-12 md:mb-14 max-w-none leading-relaxed">
+              Languages and frameworks I rely on to build production-ready applications.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3.5 md:gap-4" data-parallax="0.08">
             {techStack.map((item) => (
               <span class="group flex items-center gap-3 text-[16px] md:text-[17px] px-5 py-3.5 md:px-6 md:py-4 rounded-xl border-2 border-[#1f1f1f] bg-[#0f0f0f] text-[var(--color-muted)] hover:text-foreground hover:border-[#363636] hover:bg-[#141414] transition-all duration-150 cursor-default tracking-wide font-medium">
                 <img
@@ -166,11 +189,13 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
              TOOLS & SERVICES
         ════════════════════════════════════════════ -->
         <section id="tools" class="animate-fade-up delay-6 py-24 md:py-28 border-t border-[var(--color-border)]">
-          <h2 class="text-2xl md:text-3xl xl:text-[2.125rem] font-semibold mb-4 tracking-tight text-[var(--color-foreground)]">Workflow &amp; Tooling</h2>
-          <p class="text-[17px] md:text-[19px] xl:text-[20px] text-[var(--color-muted)] mb-12 md:mb-14 max-w-none leading-relaxed">
-            Platforms and tools I use day to day for development, design, and delivery.
-          </p>
-          <div class="flex flex-wrap gap-3.5 md:gap-4">
+          <div data-parallax="0.04">
+            <h2 class="text-2xl md:text-3xl xl:text-[2.125rem] font-semibold mb-4 tracking-tight text-[var(--color-foreground)]">Workflow &amp; Tooling</h2>
+            <p class="text-[17px] md:text-[19px] xl:text-[20px] text-[var(--color-muted)] mb-12 md:mb-14 max-w-none leading-relaxed">
+              Platforms and tools I use day to day for development, design, and delivery.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-3.5 md:gap-4" data-parallax="0.08">
             {tools.map((tool) => (
               <span class="group flex items-center gap-3 text-[16px] md:text-[17px] px-5 py-3.5 md:px-6 md:py-4 rounded-xl border-2 border-[#1f1f1f] bg-[#0f0f0f] text-[var(--color-muted)] hover:text-foreground hover:border-[#363636] hover:bg-[#141414] transition-all duration-150 cursor-default tracking-wide font-medium">
                 <img
@@ -190,7 +215,7 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
         <!-- ═══════════════════════════════════════════
              FOOTER
         ════════════════════════════════════════════ -->
-        <footer class="pt-16 md:pt-20 pb-3 border-t border-[var(--color-border)]">
+        <footer class="pt-16 md:pt-20 pb-3 border-t border-[var(--color-border)]" data-parallax="0.03">
           <p class="text-center text-base md:text-[17px] xl:text-lg text-[var(--color-muted)] leading-relaxed px-4 max-w-[52rem] mx-auto">
             &copy; {new Date().getFullYear()} {personal.name}. This site is
             <a

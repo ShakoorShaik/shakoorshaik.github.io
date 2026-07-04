@@ -80,6 +80,24 @@ a {
 .delay-5 { animation-delay: 0.5s; opacity: 0; }
 .delay-6 { animation-delay: 0.6s; opacity: 0; }
 
+/* Parallax — GPU-accelerated, disabled for reduced motion */
+[data-parallax] {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax] {
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+.parallax-bg-glow {
+  filter: blur(80px);
+  transform: translateZ(0);
+}
+
 /* Modal animations */
 @keyframes modalIn {
   from { opacity: 0; transform: translateY(20px) scale(0.97); }
