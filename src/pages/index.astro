@@ -172,12 +172,11 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
             {techStack.map((item) => (
               <span class="group flex items-center gap-3 text-[16px] md:text-[17px] px-5 py-3.5 md:px-6 md:py-4 rounded-xl border-2 border-[#1f1f1f] bg-[#0f0f0f] text-[var(--color-muted)] hover:text-foreground hover:border-[#363636] hover:bg-[#141414] transition-all duration-150 cursor-default tracking-wide font-medium">
                 <img
-                  src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${item.icon}/${item.icon}-original.svg`}
+                  src={`/assets/icons/${item.icon}.svg`}
                   alt=""
                   width="20"
                   height="20"
                   class="w-5 h-5 md:w-[22px] md:h-[22px] object-contain grayscale brightness-150 opacity-70 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-200"
-                  onerror="this.style.display='none'"
                 />
                 {item.name}
               </span>
@@ -199,12 +198,11 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
             {tools.map((tool) => (
               <span class="group flex items-center gap-3 text-[16px] md:text-[17px] px-5 py-3.5 md:px-6 md:py-4 rounded-xl border-2 border-[#1f1f1f] bg-[#0f0f0f] text-[var(--color-muted)] hover:text-foreground hover:border-[#363636] hover:bg-[#141414] transition-all duration-150 cursor-default tracking-wide font-medium">
                 <img
-                  src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tool.icon}/${tool.icon}-original.svg`}
+                  src={`/assets/icons/${tool.icon}.svg`}
                   alt=""
                   width="20"
                   height="20"
                   class="w-5 h-5 md:w-[22px] md:h-[22px] object-contain grayscale brightness-150 opacity-70 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-200"
-                  onerror="this.style.display='none'"
                 />
                 {tool.name}
               </span>

@@ -133,7 +133,7 @@ export const projects: Project[] = [
       { label: 'Source Code', url: 'https://github.com/ShakoorShaik/smartair-android-app', icon: 'github' },
     ],
     image: '/assets/projects/smart-air.png',
-    demoVideo: 'https://github.com/user-attachments/assets/5dccf876-4035-4406-8a99-d6700c6d609d',
+    demoVideo: '/assets/demos/smartair.mp4',
     featured: true,
     readme: `## Overview
 
@@ -201,7 +201,7 @@ The app uses a hybrid architecture combining **MVP (Model-View-Presenter)** for 
       { label: 'Live Demo', url: 'https://okra-theta.vercel.app', icon: 'external' },
     ],
     image: '/assets/projects/okra.png',
-    demoVideo: 'https://github.com/user-attachments/assets/f512d512-22e0-4889-a413-f2fbb74a738e',
+    demoVideo: '/assets/demos/okra.mp4',
     featured: false,
     readme: `## Overview
 
@@ -274,7 +274,7 @@ Three distinct agents power the platform using ibm/granite-3-8b-instruct:
       { label: 'Live Demo', url: 'https://clippys.vercel.app', icon: 'external' },
     ],
     image: '/assets/projects/clippy.png',
-    demoVideo: 'https://github.com/user-attachments/assets/1f05ed35-a38f-4962-bda8-71261988edc0',
+    demoVideo: '/assets/demos/clippy.mp4',
     featured: false,
     award: '2nd Place at MUES Hackathon TMU 2024',
     readme: `## Overview
@@ -336,7 +336,7 @@ Clippy is a modern drawing application inspired by MS Paint with AI-powered draw
       { label: 'Source Code', url: 'https://github.com/ShakoorShaik/lvcky', icon: 'github' },
       { label: 'Notion Demo', url: 'https://lvcky.notion.site/2f249ff2083f801a8527c6ce2dec63bc', icon: 'external' },
     ],
-    image: 'https://github.com/user-attachments/assets/c7512cbe-378d-4ffe-b432-754a3a97879a',
+    image: '/assets/demos/lvcky.jpg',
     demoVideo: null,
     featured: false,
     award: '2nd Place at MUES Winter Hackathon x Notion TMU 2025',
