@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import HeroTerminal from '../components/HeroTerminal'
+import HeroRubiks from '../components/HeroRubiks'
 import ParallaxScroll from '../components/ParallaxScroll'
 import Projects from '../components/Projects'
 import ExperienceTimeline from '../components/ExperienceTimeline'
@@ -66,22 +66,22 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
     <main class="relative z-10 w-full max-w-[1600px] mx-auto px-5 sm:px-8 md:px-10 xl:px-14 2xl:px-16 pb-24 pt-[52px]">
 
       <!-- ═══════════════════════════════════════════
-           HERO — bio left, terminal right
+           HERO — bio left, Rubik's cube right
       ════════════════════════════════════════════ -->
       <section class="pt-12 md:pt-14 mb-24 md:mb-28 animate-fade-up delay-1">
-        <!-- Availability -->
-        <div class="mb-8 md:mb-10" data-parallax="0.06">
-          <div class="inline-flex items-stretch font-mono text-[11px] md:text-[12px] tracking-[0.08em] uppercase select-none">
-            <span class="border border-[#2a2a2e] bg-[#101014] px-2 py-2 text-[#555]">status</span>
-            <span class="border-y border-r border-[#2a2a2e] bg-[#0c0c0f] px-3 py-2 text-[#7a7a7a]">open to internships</span>
-            <span class="border-y border-r border-[#2a2a2e] bg-[#0f0f12] px-3 py-2 text-[#555]">summer 2027</span>
-          </div>
-        </div>
+        <!-- Availability lives inside left column so cube centers against full copy block -->
+        <div class="flex flex-col md:flex-row md:items-center gap-8 md:gap-10 xl:gap-14">
 
-        <div class="flex flex-col md:flex-row md:items-center gap-12 md:gap-14 xl:gap-[4.5rem]">
+          <!-- Left: status + headline + blurb -->
+          <div class="flex-1 min-w-0 md:py-4">
+            <div class="mb-8 md:mb-10">
+              <div class="inline-flex items-stretch font-mono text-[11px] md:text-[12px] tracking-[0.08em] uppercase select-none">
+                <span class="border border-[#2a2a2e] bg-[#101014] px-2 py-2 text-[#555]">status</span>
+                <span class="border-y border-r border-[#2a2a2e] bg-[#0c0c0f] px-3 py-2 text-[#7a7a7a]">open to internships</span>
+                <span class="border-y border-r border-[#2a2a2e] bg-[#0f0f12] px-3 py-2 text-[#555]">summer 2027</span>
+              </div>
+            </div>
 
-          <!-- Left: display headline + blurb -->
-          <div class="flex-1 min-w-0 md:py-1" data-parallax="0.11">
             <h1 class="text-[clamp(2.625rem,3.2vw+1.75rem,3.875rem)] sm:text-[3.375rem] lg:text-[3.625rem] xl:text-[4rem] font-bold leading-[1.06] tracking-[-0.02em] mb-6 md:mb-8">
               <span class="text-[#505050]">Hey! I'm </span><span class="text-white">{personal.name}</span><span class="text-[#505050]">,<br/>a </span><span class="text-white">Software<br/>Developer</span><span class="text-[#505050]"><br/>and </span><span class="text-white">AI Engineer</span><span class="text-[#505050]">.</span>
             </h1>
@@ -135,9 +135,15 @@ import { experiences, personal, techStack, tools } from '../data/portfolio'
             </div>
           </div>
 
-          <!-- Right: terminal — wider + taller than before; vertically centered beside copy on md+ -->
-          <div class="w-full md:w-[clamp(340px,36vw,420px)] lg:w-[clamp(400px,32vw,480px)] xl:w-[520px] shrink-0 animate-fade-up delay-2 h-[420px] sm:h-[460px] md:h-[490px] lg:h-[540px] xl:h-[580px]" data-parallax="-0.09">
-            <HeroTerminal client:only="react" />
+          <!-- Right: larger cube, optically centered with copy -->
+          <div
+            class="w-full md:w-[clamp(380px,40vw,540px)] lg:w-[clamp(440px,36vw,600px)] xl:w-[600px] shrink-0 self-center min-h-[440px] md:min-h-0 animate-fade-up delay-2 overflow-visible flex items-center justify-center"
+            data-parallax="-0.38"
+            data-parallax-mode="fixed"
+          >
+            <div class="w-full aspect-square max-w-[600px]">
+              <HeroRubiks client:only="react" />
+            </div>
           </div>
 
         </div>

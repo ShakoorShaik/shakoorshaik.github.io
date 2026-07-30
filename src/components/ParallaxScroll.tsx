@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 const SMOOTHING = 0.082
-const MAX_OFFSET = 140
+const MAX_OFFSET = 280
 
 type ParallaxTarget = {
   el: HTMLElement
