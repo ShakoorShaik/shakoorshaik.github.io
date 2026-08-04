@@ -19,9 +19,9 @@ import {
   Group,
   MathUtils,
   Mesh,
+  MeshPhysicalMaterial,
   MeshStandardMaterial,
   PerspectiveCamera,
-  PlaneGeometry,
   Quaternion,
   SRGBColorSpace,
   Vector3,
@@ -32,8 +32,9 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 const CUBIE_SIZE = 0.9
 const CUBIE_GAP = 0.08
 const STEP = CUBIE_SIZE + CUBIE_GAP
-const PANEL = CUBIE_SIZE * 0.76
-const PANEL_LIFT = CUBIE_SIZE / 2 + 0.01
+const STICKER = CUBIE_SIZE * 0.78
+const STICKER_DEPTH = 0.045
+const STICKER_LIFT = CUBIE_SIZE / 2 + STICKER_DEPTH * 0.35
 
 /** Half-diagonal of assembled cube (corner from origin), unscaled */
 const CUBE_RADIUS = (STEP + CUBIE_SIZE / 2) * Math.sqrt(3)
@@ -51,10 +52,23 @@ const CAMERA_POS: [number, number, number] = [4.0, 2.9, 6.0]
 const CAMERA_FOV = 30
 const LOOK_Y = 0
 
-/** Near-matte-black — lighting still carves seams and faces */
-const BODY = '#0e0e10'
-const PANEL_COLOR = '#18181c'
-const CORE = '#050506'
+/**
+ * Seiko / Grand Seiko luxury dial palette —
+ * champagne, moonlit navy, autumn burgundy, Atera emerald, snow ivory, gunmetal
+ */
+const BODY = '#121214'
+const CORE = '#070709'
+
+type FaceId = 'px' | 'nx' | 'py' | 'ny' | 'pz' | 'nz'
+
+const FACE_COLORS: Record<FaceId, string> = {
+  py: '#D4B06E', // champagne / Bantō gold — warmer, brighter
+  ny: '#F0EBE0', // snow ivory
+  pz: '#1A4570', // moonlit navy — richer blue
+  nz: '#7A2438', // Boshū burgundy — deeper crimson lift
+  px: '#1F6A52', // Atera emerald — clearer green
+  nx: '#6A7078', // shadow gunmetal — slightly clearer
+}
 
 type Axis = 'x' | 'y' | 'z'
 type FaceMove = { axis: Axis; layer: -1 | 1; dir: 1 | -1 }
@@ -75,7 +89,7 @@ type TurnState = {
   cubies: CubieData[]
 }
 
-const panelGeo = new PlaneGeometry(PANEL, PANEL)
+const stickerGeo = new RoundedBoxGeometry(STICKER, STICKER, STICKER_DEPTH, 2, 0.04)
 const bodyGeo = new RoundedBoxGeometry(CUBIE_SIZE, CUBIE_SIZE, CUBIE_SIZE, 5, 0.09)
 const coreGeo = new RoundedBoxGeometry(
   CUBIE_SIZE * 0.78,
@@ -85,24 +99,40 @@ const coreGeo = new RoundedBoxGeometry(
   0.04,
 )
 
-/** True matte plastic — zero gloss */
+/** Dark case plastic — soft matte like a Seiko mid-case */
 const bodyMat = new MeshStandardMaterial({
   color: new Color(BODY),
-  metalness: 0,
-  roughness: 0.98,
-})
-const panelMat = new MeshStandardMaterial({
-  color: new Color(PANEL_COLOR),
-  metalness: 0,
-  roughness: 0.96,
+  metalness: 0.12,
+  roughness: 0.88,
 })
 const coreMat = new MeshStandardMaterial({
   color: new Color(CORE),
-  metalness: 0,
-  roughness: 1,
+  metalness: 0.04,
+  roughness: 0.96,
 })
 
-const SHARED_GEOS = new Set([panelGeo, bodyGeo, coreGeo])
+/** Lacquered dial stickers — deep color with soft clearcoat sheen */
+function makeStickerMat(hex: string, opts?: { metalness?: number; roughness?: number }) {
+  return new MeshPhysicalMaterial({
+    color: new Color(hex),
+    metalness: opts?.metalness ?? 0.18,
+    roughness: opts?.roughness ?? 0.42,
+    clearcoat: 0.55,
+    clearcoatRoughness: 0.28,
+    reflectivity: 0.45,
+  })
+}
+
+const faceMats: Record<FaceId, MeshPhysicalMaterial> = {
+  py: makeStickerMat(FACE_COLORS.py, { metalness: 0.32, roughness: 0.38 }),
+  ny: makeStickerMat(FACE_COLORS.ny, { metalness: 0.1, roughness: 0.48 }),
+  pz: makeStickerMat(FACE_COLORS.pz, { metalness: 0.22, roughness: 0.4 }),
+  nz: makeStickerMat(FACE_COLORS.nz, { metalness: 0.2, roughness: 0.44 }),
+  px: makeStickerMat(FACE_COLORS.px, { metalness: 0.2, roughness: 0.42 }),
+  nx: makeStickerMat(FACE_COLORS.nx, { metalness: 0.35, roughness: 0.36 }),
+}
+
+const SHARED_GEOS = new Set([stickerGeo, bodyGeo, coreGeo])
 
 function easeInOutExpo(t: number) {
   if (t === 0 || t === 1) return t
@@ -153,8 +183,13 @@ function rotateCoords(coords: Vector3, axis: Axis, dir: 1 | -1) {
   coords.z = Math.round(coords.z)
 }
 
-function addPanel(group: Group, pos: [number, number, number], rot: [number, number, number]) {
-  const mesh = new Mesh(panelGeo, panelMat)
+function addSticker(
+  group: Group,
+  face: FaceId,
+  pos: [number, number, number],
+  rot: [number, number, number],
+) {
+  const mesh = new Mesh(stickerGeo, faceMats[face])
   mesh.position.set(...pos)
   mesh.rotation.set(...rot)
   group.add(mesh)
@@ -166,12 +201,12 @@ function createCubie(x: number, y: number, z: number): Group {
   group.add(new Mesh(bodyGeo, bodyMat))
   group.add(new Mesh(coreGeo, coreMat))
 
-  if (x === 1) addPanel(group, [PANEL_LIFT, 0, 0], [0, Math.PI / 2, 0])
-  if (x === -1) addPanel(group, [-PANEL_LIFT, 0, 0], [0, -Math.PI / 2, 0])
-  if (y === 1) addPanel(group, [0, PANEL_LIFT, 0], [-Math.PI / 2, 0, 0])
-  if (y === -1) addPanel(group, [0, -PANEL_LIFT, 0], [Math.PI / 2, 0, 0])
-  if (z === 1) addPanel(group, [0, 0, PANEL_LIFT], [0, 0, 0])
-  if (z === -1) addPanel(group, [0, 0, -PANEL_LIFT], [0, Math.PI, 0])
+  if (x === 1) addSticker(group, 'px', [STICKER_LIFT, 0, 0], [0, Math.PI / 2, 0])
+  if (x === -1) addSticker(group, 'nx', [-STICKER_LIFT, 0, 0], [0, -Math.PI / 2, 0])
+  if (y === 1) addSticker(group, 'py', [0, STICKER_LIFT, 0], [-Math.PI / 2, 0, 0])
+  if (y === -1) addSticker(group, 'ny', [0, -STICKER_LIFT, 0], [Math.PI / 2, 0, 0])
+  if (z === 1) addSticker(group, 'pz', [0, 0, STICKER_LIFT], [0, 0, 0])
+  if (z === -1) addSticker(group, 'nz', [0, 0, -STICKER_LIFT], [0, Math.PI, 0])
 
   group.position.set(x * STEP, y * STEP, z * STEP)
   return group
@@ -180,7 +215,6 @@ function createCubie(x: number, y: number, z: number): Group {
 function disposeCubie(group: Group) {
   group.traverse((obj) => {
     if (!(obj instanceof Mesh)) return
-    // Shared geometries stay alive for the module lifetime
     if (!SHARED_GEOS.has(obj.geometry)) obj.geometry?.dispose()
   })
 }
@@ -235,30 +269,32 @@ function useInView(ref: RefObject<HTMLElement | null>) {
 function StudioLights() {
   return (
     <>
-      {/* Quieter wash so base reads as black; key/rims still carve form */}
-      <ambientLight intensity={0.2} color="#c0c8d4" />
-      <hemisphereLight args={['#e4eaf2', '#040406', 0.55]} />
+      {/* Jewelry-case studio wash — lets lacquered dials read rich */}
+      <ambientLight intensity={0.34} color="#e8e0d4" />
+      <hemisphereLight args={['#fff4e8', '#0a0c10', 0.62]} />
 
-      {/* Key from above-left — lifts top faces without gloss */}
-      <directionalLight position={[4.2, 7.0, 3.2]} intensity={3.55} color="#f7f8fb" />
-      {/* Cool fill from camera-left */}
-      <directionalLight position={[-4.8, 2.2, 3.0]} intensity={1.35} color="#a8b8cc" />
-      {/* Underside bounce so bottom cubies stay readable */}
-      <directionalLight position={[0.2, -4.2, 1.6]} intensity={0.55} color="#4a5566" />
+      {/* Warm key — champagne & ivory catch light */}
+      <directionalLight position={[4.4, 6.8, 3.0]} intensity={2.85} color="#fff6ea" />
+      {/* Cool fill — navy & emerald stay deep */}
+      <directionalLight position={[-4.6, 2.4, 2.8]} intensity={1.25} color="#b0c0d8" />
+      {/* Soft under-bounce */}
+      <directionalLight position={[0.3, -4.0, 1.5]} intensity={0.48} color="#6a7382" />
 
-      {/* Soft color rims for silhouette separation */}
-      <pointLight position={[-3.8, 2.4, -2.8]} intensity={1.9} color="#4ade80" distance={22} decay={2} />
-      <pointLight position={[3.6, 1.0, -2.2]} intensity={1.7} color="#3b82f6" distance={22} decay={2} />
+      {/* Color-aware rims — emerald + burgundy accents */}
+      <pointLight position={[-3.6, 2.2, -2.6]} intensity={1.55} color="#2f8f6e" distance={22} decay={2} />
+      <pointLight position={[3.5, 0.8, -2.0]} intensity={1.35} color="#8b3a4a" distance={22} decay={2} />
+      {/* Champagne kiss from above-right */}
+      <pointLight position={[2.8, 4.2, 3.2]} intensity={1.2} color="#e8c98a" distance={18} decay={2} />
 
       <spotLight
-        position={[1.0, 7.4, 2.4]}
-        angle={0.45}
-        penumbra={0.88}
-        intensity={2.15}
-        color="#ffffff"
+        position={[1.2, 7.2, 2.6]}
+        angle={0.46}
+        penumbra={0.86}
+        intensity={1.9}
+        color="#fffaf2"
         distance={28}
       />
-      <pointLight position={[0.4, 1.4, 5.2]} intensity={1.1} color="#e8eef6" distance={16} decay={2} />
+      <pointLight position={[0.3, 1.3, 5.0]} intensity={1.05} color="#f0ebe3" distance={16} decay={2} />
     </>
   )
 }
@@ -551,7 +587,7 @@ function RendererSetup() {
 
   useEffect(() => {
     gl.toneMapping = ACESFilmicToneMapping
-    gl.toneMappingExposure = 1.45
+    gl.toneMappingExposure = 1.38
     gl.outputColorSpace = SRGBColorSpace
     // Transparent clear so page atmosphere (glows) shows through — no flat “canvas box”
     gl.setClearColor(0x000000, 0)
@@ -661,7 +697,7 @@ export default function HeroRubiks() {
       className="relative h-full w-full min-h-[inherit] overflow-visible cursor-pointer"
       role="button"
       tabIndex={0}
-      aria-label="Matte black Rubik's cube — press to turn a face"
+      aria-label="Seiko-inspired colored Rubik's cube — press to turn a face"
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
       onClick={onActivate}
